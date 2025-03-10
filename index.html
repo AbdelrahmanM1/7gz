@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز ملعب المدرسة</title>
+    <link rel="icon" href="/icon/favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <style>
+        /* General Styling */
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e3a8a;
+            --secondary: #059669;
+            --secondary-hover: #047857;
+            --light: #f0f9ff;
+            --dark: #1e293b;
+            --gray: #94a3b8;
+            --border-radius: 12px;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary)) fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            color: white;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .page-container {
+            position: relative;
+            z-index: 1;
+            padding: 20px 0 80px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 550px;
+            margin: 20px auto;
+            padding: 30px;
+            background: white;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            color: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .header {
+            position: relative;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            margin: 20px auto;
+            padding: 15px 25px;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        h3 {
+            margin: 15px 0;
+            color: var(--primary);
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: var(--transition);
+            background-color: #f8fafc;
+            color: var(--dark);
+        }
+
+        input[type="date"] {
+            padding-right: 15px;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--primary-light);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+            background-color: white;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-btn {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+        }
+
+        .primary-btn:active {
+            transform: translateY(0);
+        }
+
+        .secondary-btn {
+            background: linear-gradient(to right, var(--secondary), #10b981);
+            color: white;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+
+        .secondary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        /* Add ripple effect */
+        button::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+
+        button:active::after {
+            transform: scale(0, 0);
+            opacity: .3;
+            transition: 0s;
+        }
+
+        .end-time-display {
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        #bookingDetails {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            text-align: right;
+            display: none;
+            border-right: 4px solid var(--primary-light);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        #bookingDetails p {
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-bottom: 8px;
+        }
+
+        #bookingDetails p:last-child {
+            border-bottom: none;
+        }
+
+        #qr-container {
+            margin-top: 30px;
+            display: none;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        #qr-code {
+            width: 250px;
+            height: 250px;
+            margin: auto;
+            display: block;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        #qr-code:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        #downloadQR {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .qr-instructions {
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--gray);
+            background-color: #f1f5f9;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            backdrop-filter: blur(10px);
+            font-size: 14px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Decorative elements */
+        .decoration {
+            position: absolute;
+            background: var(--primary-light);
+            opacity: 0.05;
+            border-radius: 50%;
+        }
+
+        .decoration-1 {
+            width: 150px;
+            height: 150px;
+            top: -50px;
+            right: -50px;
+        }
+
+        .decoration-2 {
+            width: 100px;
+            height: 100px;
+            bottom: 50px;
+            left: -30px;
+        }
+
+        /* Info box for field types */
+        .info-box {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            text-align: right;
+            border-right: 4px solid var(--primary-light);
+        }
+
+        .info-box h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .info-box p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+                margin: 15px auto;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .logo {
+                font-size: 22px;
+                padding: 10px 20px;
+            }
+            
+            select, input, button {
+                padding: 12px;
+            }
+        }
+
+        /* Success message animation */
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="logo">مدرسة اللغات الرسمية بعزبة البرج</div>
+        
+        <div class="container">
+            <div class="decoration decoration-1"></div>
+            <div class="decoration decoration-2"></div>
+            
+            <div class="header">
+                <h1>حجز ملعب المدرسة الغات الرسمية بعزبة البرج</h1>
+                <div class="subtitle">يرجى ملء التفاصيل أدناه لحجز الملعب</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">الاسم:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="name" placeholder="ادخل اسمك بالكامل" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fieldType">نوع الملعب:</label>
+                <div class="input-wrapper">
+                    <select id="fieldType" onchange="showFieldInfo()">
+                        <option value="كورة">كورة</option>
+                        <option value="بادل">بادل</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="fieldInfo" class="info-box">
+                <h4>معلومات عن الملعب المختار:</h4>
+                <div id="fieldInfoContent">
+                    <p>• ملعب كورة: ملعب صالات</p>
+                    <p>• مناسب لفرق من 5 إلى 8 لاعب</p>
+                    <p>• متوفر كرات وسترات للفريقين</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="date">التاريخ:</label>
+                <div class="input-wrapper">
+                    <input type="date" id="date" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="timeSlot">وقت الحجز:</label>
+                <div class="input-wrapper">
+                    <select id="timeSlot" onchange="updateEndTime()">
+                        <option value="10:00">10:00 صباحاً</option>
+                        <option value="11:00">11:00 صباحاً</option>
+                        <option value="12:00">12:00 ظهراً</option>
+                        <option value="13:00">1:00 ظهراً</option>
+                        <option value="14:00">2:00 ظهراً</option>
+                        <option value="15:00">3:00 عصراً</option>
+                        <option value="16:00">4:00 عصراً</option>
+                        <option value="17:00">5:00 مساءً</option>
+                        <option value="18:00">6:00 مساءً</option>
+                        <option value="19:00">7:00 مساءً</option>
+                        <option value="20:00">8:00 مساءً</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">مدة الحجز:</label>
+                <div class="input-wrapper">
+                    <select id="duration" onchange="updateEndTime()">
+                        <option value="1">ساعة واحدة</option>
+                        <option value="2">ساعتين</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" id="endTimeDisplay">
+                <label>ينتهي الحجز الساعة:</label>
+                <div id="endTime" class="end-time-display">11:00 صباحاً</div>
+            </div>
+
+            <button class="primary-btn" onclick="generateQR()">تأكيد الحجز</button>
+
+            <div id="bookingDetails"></div>
+
+            <div id="qr-container">
+                <h3>رمز التأكيد الخاص بك</h3>
+                <canvas id="qr-code"></canvas>
+                <div class="qr-instructions">
+                    <p>يرجى إظهار هذا الرمز عند الوصول إلى الملعب</p>
+                    <p>احفظ الصورة على هاتفك لسهولة الوصول</p>
+                </div>
+                <button id="downloadQR" class="secondary-btn" onclick="downloadQRCode()">
+                    تحميل رمز QR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <!-- Year will be dynamically inserted here -->
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Update footer with current year
+            updateFooterYear();
+            
+            // Set minimum date to today
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = (today.getMonth() + 1).toString().padStart(2, '0');
+            var day = today.getDate().toString().padStart(2, '0');
+            document.getElementById('date').setAttribute("min", `${year}-${month}-${day}`);
+            document.getElementById('date').setAttribute("value", `${year}-${month}-${day}`);
+            
+            // Initial end time update
+            updateEndTime();
+            showFieldInfo();
+        });
+
+        function updateFooterYear() {
+            // Get current year and update footer
+            var currentYear = new Date().getFullYear();
+            document.getElementById('footer').innerHTML = 
+                `<p>تم التطوير بواسطة عبد الرحمن محرم | جميع الحقوق محفوظة | &copy; ${currentYear}</p>`;
+        }
+
+        function showFieldInfo() {
+            var fieldType = document.getElementById('fieldType').value;
+            var fieldInfoContent = document.getElementById('fieldInfoContent');
+            
+            if (fieldType === 'كورة') {
+                fieldInfoContent.innerHTML = `
+                    <p>• ملعب كورة: ملعب صالات</p>
+                    <p>• مناسب لفرق من 5 إلى 8 لاعب</p>
+                    <p>• متوفر كرات وسترات للفريقين</p>
+                `;
+            } else if (fieldType === 'بادل') {
+                fieldInfoContent.innerHTML = `
+                    <p>• ملعب بادل: ملعب قانوني محاط بالزجاج</p>
+                    <p>• مناسب للعب من 2 إلى 4 لاعبين</p>
+                    <p>• متوفر مضارب وكرات للاعبين</p>
+                `;
+            }
+        }
+
+        function updateEndTime() {
+            var startTime = document.getElementById('timeSlot').value;
+            var duration = parseInt(document.getElementById('duration').value);
+            
+            // Parse the start time
+            var [hours, minutes] = startTime.split(':').map(Number);
+            
+            // Calculate end time
+            var endHour = hours + duration;
+            var endTimeFormatted;
+            
+            if (endHour >= 24) {
+                endHour = endHour - 24;
+            }
+            
+            // Format for display in Arabic
+            if (endHour < 12) {
+                endTimeFormatted = `${endHour}:00 صباحاً`;
+            } else if (endHour === 12) {
+                endTimeFormatted = `${endHour}:00 ظهراً`;
+            } else if (endHour < 17) {
+                endTimeFormatted = `${endHour - 12}:00 ظهراً`;
+            } else {
+                endTimeFormatted = `${endHour - 12}:00 مساءً`;
+            }
+            
+            // Update the display
+            document.getElementById('endTime').textContent = endTimeFormatted;
+        }
+
+        function generateQR() {
+            var name = document.getElementById('name').value;
+            var fieldType = document.getElementById('fieldType').value;
+            var date = document.getElementById('date').value;
+            var startTime = document.getElementById('timeSlot').value;
+            var duration = parseInt(document.getElementById('duration').value);
+            
+            if (!name || !date) {
+                alert("يرجى ملء جميع البيانات المطلوبة!");
+                return;
+            }
+
+            // Format date for display
+            var displayDate = new Date(date);
+            var formattedDate = displayDate.toLocaleDateString('ar-EG', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Parse the start time for calculation
+            var [startHour, startMinute] = startTime.split(':').map(Number);
+            
+            // Calculate end time
+            var endHour = startHour + duration;
+            var endTime;
+            
+            if (endHour >= 24) {
+                endHour = endHour - 24;
+            }
+            
+            endTime = `${endHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
+
+            // Format times for display in Arabic
+            var startTimeArabic, endTimeArabic;
+            
+            if (startHour < 12) {
+                startTimeArabic = `${startHour}:${startMinute.toString().padStart(2, '0')} صباحاً`;
+            } else if (startHour === 12) {
+                startTimeArabic = `${startHour}:${startMinute.toString().padStart(2, '0')} ظهراً`;
+            } else if (startHour < 17) {
+                startTimeArabic = `${startHour - 12}:${startMinute.toString().padStart(2, '0')} ظهراً`;
+            } else {
+                startTimeArabic = `${startHour - 12}:${startMinute.toString().padStart(2, '0')} مساءً`;
+            }
+            
+            if (endHour < 12) {
+                endTimeArabic = `${endHour}:${startMinute.toString().padStart(2, '0')} صباحاً`;
+            } else if (endHour === 12) {
+                endTimeArabic = `${endHour}:${startMinute.toString().padStart(2, '0')} ظهراً`;
+            } else if (endHour < 17) {
+                endTimeArabic = `${endHour - 12}:${startMinute.toString().padStart(2, '0')} ظهراً`;
+            } else {
+                endTimeArabic = `${endHour - 12}:${startMinute.toString().padStart(2, '0')} مساءً`;
+            }
+
+            // Generate a unique booking ID
+            var bookingId = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+            // Create QR value
+            var qrValue = JSON.stringify({
+                id: bookingId,
+                name: name,
+                field: fieldType,
+                date: formattedDate,
+                start: startTimeArabic,
+                end: endTimeArabic,
+                duration: duration
+            });
+
+            // Show booking details
+            var detailsDiv = document.getElementById('bookingDetails');
+            detailsDiv.innerHTML = `
+                <h3>تفاصيل الحجز</h3>
+                <p><strong>رقم الحجز:</strong> <span>${bookingId}</span></p>
+                <p><strong>الاسم:</strong> <span>${name}</span></p>
+                <p><strong>الملعب:</strong> <span>${fieldType}</span></p>
+                <p><strong>التاريخ:</strong> <span>${formattedDate}</span></p>
+                <p><strong>الوقت:</strong> <span>من ${startTimeArabic} إلى ${endTimeArabic}</span></p>
+                <p><strong>المدة:</strong> <span>${duration === 1 ? 'ساعة واحدة' : 'ساعتين'}</span></p>
+            `;
+            detailsDiv.style.display = "block";
+            detailsDiv.classList.add('animate-in');
+
+            // Generate QR code with higher error correction
+            var qrCanvas = document.getElementById('qr-code');
+            new QRious({
+                element: qrCanvas,
+                value: qrValue,
+                size: 300,
+                level: 'H', // High error correction level
+                background: 'white',
+                foreground: '#1e3a8a'
+            });
+
+            document.getElementById('qr-container').style.display = "block";
+            document.getElementById('qr-container').classList.add('animate-in');
+            document.getElementById('downloadQR').style.display = "block";
+
+            // Scroll to QR code
+            setTimeout(function() {
+                document.getElementById('qr-container').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function downloadQRCode() {
+            var qrCanvas = document.getElementById('qr-code');
+            var downloadLink = document.createElement("a");
+            downloadLink.href = qrCanvas.toDataURL("image/png");
+            
+            // Add date and time to filename
+            var now = new Date();
+            var dateStr = now.toLocaleDateString('ar-EG').replace(/\//g, '-');
+            var timeStr = now.toLocaleTimeString('ar-EG').replace(/:/g, '-');
+            
+            downloadLink.download = `حجز_ملعب_${dateStr}_${timeStr}.png`;
+            downloadLink.click();
+        }
+    </script>
+</body>
+</html>
