@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حجز ملعب المدرسة</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/icon/favicon.ico" type="image/x-icon">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <style>
         /* General Styling */
@@ -403,7 +403,7 @@
             <div class="decoration decoration-2"></div>
             
             <div class="header">
-                <h1>حجز ملعب مدرسة اللغات الرسمية بعزبة البرج</h1>
+                <h1>حجز ملعب المدرسة اللغات الرسمية بعزبة البرج</h1>
                 <div class="subtitle">يرجى ملء التفاصيل أدناه لحجز الملعب</div>
             </div>
             
@@ -429,7 +429,6 @@
                 <div id="fieldInfoContent">
                     <p>• ملعب كورة: ملعب صالات</p>
                     <p>• مناسب لفرق من 5 إلى 8 لاعب</p>
-                    <p>• متوفر كرات وسترات للفريقين</p>
                 </div>
             </div>
 
@@ -529,13 +528,11 @@
                 fieldInfoContent.innerHTML = `
                     <p>• ملعب كورة: ملعب صالات</p>
                     <p>• مناسب لفرق من 5 إلى 8 لاعب</p>
-                    <p>• متوفر كرات وسترات للفريقين</p>
                 `;
             } else if (fieldType === 'بادل') {
                 fieldInfoContent.innerHTML = `
                     <p>• ملعب بادل: ملعب قانوني محاط بالزجاج</p>
                     <p>• مناسب للعب من 2 إلى 4 لاعبين</p>
-                    <p>• متوفر مضارب وكرات للاعبين</p>
                 `;
             }
         }
